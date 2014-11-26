@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	<title></title>
+
+        <script data-main="CanvasController" src="require.js"></script>
+
+        <style>
+        	#container {
+        		position : absolute;
+        		top    : 0px;
+        		left   : 0px;
+        	}
+
+        	#buttonsPanel {
+        		position : absolute;
+        		top    : 10px;
+        		left   : 10px;
+        		width  : 800px;
+        		height : 30px;
+        		border : 1px solid #000000;
+        	}
+
+        	#editor {
+        		position : absolute;
+        		top    : 50px;
+        		left   : 10px;
+        		width  : 800px;
+        		height : 800px;
+        		border : 1px solid #000000;
+        	}
+
+        	#textarea {
+        		position : absolute;
+        		top    : 50px;
+        		left   : 820px;
+        		width  : 200px;
+        		height : 800px;
+        		border : 1px solid #000000;
+        		resize : none;
+        	}
+
+        	#pathButtons {
+        		position : absolute;
+        		top  : 4px;
+        		left : 50px;
+        	}
+
+        	#utilButtons {
+        		position : absolute;
+        		top   : 4px;
+        		right : 50px;
+        	}
+
+        </style>
+
+	</head>
+	<body>
+		<div id="container">
+			<div id="buttonsPanel">
+				<div id="pathButtons">
+					<button id="pathButton"   style="top : 5px;">
+						Add path
+					</button>
+					<button id="boxButton"    style="top : 5px;">
+						Add box
+					</button>
+					<button id="trapButton"   style="top : 5px;">
+						Add trap
+					</button>
+					<button id="carrotButton" style="top : 5px;">
+						Add carrot
+					</button>
+				</div>
+				<div id="utilButtons">
+					<button id="clearButton"  style="top : 5px;">
+						Clear
+					</button>
+					<button id="printButton"  style="top : 5px;">
+						Print JSON
+					</button>
+				</div>
+			</div>
+			<canvas id="editor" width="800px" height="800px">
+				Your browser does not support the HTML5 canvas tag.
+			</canvas>
+			<textarea id="textarea" readonly></textarea>
+		</div>
+	</body>
+</html>

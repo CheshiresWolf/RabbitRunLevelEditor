@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	<title></title>
+        <script>
+        	var c, ctx;
+        	var boxW, boxH;
+        	var offsetX, offsetY;
+
+        	var path, pathArray = [];
+
+        	var imageLoader = new ImageLoader();
+
+	        function init() {
+				c = document.getElementById("editor");
+				ctx = c.getContext("2d");
+
+				boxW = c.width  / 10;
+				boxH = c.height / 10;
+
+				console.log("main.html | canvas.pos : (" + c.style.left + ", " + c.style.top + ")");
+				console.log("main.html | canvas.size : (" + c.width + ", " + c.height + ")");
+
+				imageLoader.loadImage("fon.png", {
+					x : 0,
+					y : 0,
+					width  : 800,
+					height : 800
+				});
+			}
+
+			function mouseDown(e) {
+				//init path
+				path = new Path();
+
+				path.setStartDot(e.offsetX, e.offsetY);
+
+				c.onmousemove = mouseMove;
+				c.onmouseout  = mouseOut;
+			}
+
+			function mouseUp(e) {
+				path.setEndDot(e.offsetX, e.offsetY);
+				
+				c.onmousemove = function() {};
+				c.onmouseout  = function() {};
+
+				//save path
+				pathArray.push(path);
+			}
+
+			function mouseMove(e) {
+				path.setPathDot(e.offsetX, e.offsetY);
+			}
+
+			function mouseOut(e) {
+				var bufX = e.offsetX, bufY = e.offsetY;
+
+				if (e.offsetX < 0) bufX = 0;
+				if (e.offsetX > c.width) bufX = c.width - 1;
+
+				if (e.offsetY < 0) bufY = 0;
+				if (e.offsetY > c.height) bufY = c.height - 1;
+
+				mouseUp({
+					pageX: bufX,
+					pageY: bufY
+				});
+			}
+
+			function Path() {
+				var self = this;
+
+				var initDot, endDot;
+				var bodyDots = [];
+
+				var prevDot = [];
+
+				self.setStartDot = function(x, y) {
+					initDot = coordToIndexes(x, y);
+					bodyDots.push(initDot);
+
+					ctx.fillStyle = "#FF0000";
+					ctx.fillRect(
+						initDot[1] * boxW,
+						initDot[0] * boxH,
+						boxW,
+						boxH
+					);
+
+					prevDot = initDot;
+				};
+
+				self.setPathDot = function(x, y) {
+					var bufDot = coordToIndexes(x, y);
+
+					if ( (prevDot[0] != bufDot[0]) || (prevDot[1] != bufDot[1]) ) {
+						bodyDots.push(bufDot);
+
+						ctx.fillStyle = "#00CF1F";
+						ctx.fillRect(
+							bufDot[1] * boxW,
+							bufDot[0] * boxH,
+							boxW,
+							boxH
+						);
+
+						prevDot = bufDot;
+					}
+				};
+
+				self.setEndDot = function(x, y) {
+					endDot = coordToIndexes(x, y);
+					if (!alreadyExist(endDot, bodyDots)) bodyDots.push(endDot);
+
+					ctx.fillStyle = "#3844F2";
+					ctx.fillRect(
+						endDot[1] * boxW,
+						endDot[0] * boxH,
+						boxW,
+						boxH
+					);
+
+					drawWalls();
+				};
+
+				function alreadyExist(dot, array) {
+					for (var key in array) {
+						if ( (array[key][0] == dot[0]) && (array[key][1] == dot[1]) ) {
+							return true;
+						}
+					}
+
+					return false;
+				}
+
+				self.createJson = function() {
+					var res = {
+						name : "new_lvl",
+						base_path : "img/"
+					};
+
+					res.scheme = {
+						rabbit : initDot,
+						hole : endDot
+					};
+
+					return JSON.stringify(res);
+				}
+
+				self.getDots = function() {
+					return bodyDots;
+				};
+
+				function drawWalls() {
+					var walls = [];
+
+					var oldD = [], newD = [];
+					for (var i = 0; i < bodyDots.length - 1; i++) {
+						newD[0] = bodyDots[i + 1][0] - bodyDots[i][0];
+						newD[1] = bodyDots[i + 1][1] - bodyDots[i][1];
+
+						if (oldD.length > 0) {
+							if ( (oldD[0] != newD[0]) || (oldD[1] != newD[1]) ) {
+								walls.push([
+									bodyDots[i][0] + oldD[0],
+									bodyDots[i][1] + oldD[1]
+								])
+							}
+						}
+
+						oldD[0] = newD[0];
+						oldD[1] = newD[1];
+					}
+
+					dontWeForgetWall(
+						[ initDot[0] - 1, initDot[1] ],
+						initDot,
+						walls,
+						bodyDots
+					);
+					dontWeForgetWall(
+						bodyDots[bodyDots.length - 2],
+						bodyDots[bodyDots.length - 1],
+						walls
+					);
+
+					for (var key in walls) {
+						/*ctx.fillStyle = "#000000";
+						ctx.fillRect(
+							walls[key][1] * boxW,
+							walls[key][0] * boxH,
+							boxW,
+							boxH
+						);*/
+						imageLoader.loadImage("stone.png", {
+							x : walls[key][1] * boxW,
+							y : walls[key][0] * boxH,
+							width  : boxW,
+							height : boxH
+						});
+					}
+				}
+
+				function dontWeForgetWall(aDot, bDot, walls, another) {
+					var bufD = [];
+					bufD[0] = bDot[0] - aDot[0];
+					bufD[1] = bDot[1] - aDot[1];
+
+					var bufDot = [];
+					bufDot[0] = bDot[0] + bufD[0];
+					bufDot[1] = bDot[1] + bufD[1];
+
+					if (!alreadyExist(bufDot, walls)) {
+						if (another) {
+							if (alreadyExist(bufDot, another)) return;
+						}
+
+						walls.push(bufDot);
+					}
+				}
+
+				return self;
+			}
+
+			function coordToIndexes(x, y) {
+				var res = [];
+
+				res[0] = Math.floor(y / boxH);
+        		res[1] = Math.floor(x / boxW);
+
+				return res;
+			}
+
+			function createPath() {
+				ctx.clearRect(0, 0, c.width, c.height);
+				imageLoader.loadImage("fon.png", {
+					x : 0,
+					y : 0,
+					width  : 800,
+					height : 800
+				}, function() {
+					//draw grid
+					for (var i = boxW; i < c.width; i += boxW) {
+						ctx.moveTo(i, 0);
+						ctx.lineTo(i, c.height);
+						ctx.stroke();
+					}
+
+					for (var i = boxH; i < c.height; i += boxH) {
+						ctx.moveTo(0, i);
+						ctx.lineTo(c.width, i);
+						ctx.stroke();
+					}
+
+					//init drag
+					c.onmousedown = mouseDown;
+					c.onmouseup   = mouseUp;
+				});
+			}
+
+			function printPathArray() {
+				console.log("=======<RESULT>=======");
+
+				for (var key in pathArray) {
+					console.log(pathArray[key].createJson());
+				}
+
+				console.log("======</RESULT>=======");
+			}
+
+			function ImageLoader() {
+				var self = this;
+
+				self.images = [];
+
+				self.loadImage = function(name, opts, callback) {
+					var img = new Image();
+
+				    img.onload = function() {
+				    	self.images.push(img);
+				    	ctx.drawImage(img, opts.x, opts.y, opts.width, opts.height);
+
+				    	if (callback) callback();
+				    }
+				    img.src = "img/" + name;
+				}
+
+				return self;
+			}
+
+		</script>
+	</head>
+	<body onLoad='init()'>
+		<div id="buttonsPanel" style="position : absolute; top : 0px; left : 10px; width : 800px; height : 50px; border : 1px solid #000000;">
+			<button id="printButton" onclick="printPathArray()" style="top : 50%;">Print</button>
+			<button id="createButton" onclick="createPath()" style="top : 50%;">Create Path</button>
+		</div>
+		<canvas id="editor" width="800" height="800" style="position : absolute; top : 50px; left : 10px; border : 1px solid #000000;">
+			Your browser does not support the HTML5 canvas tag.
+		</canvas>
+	</body>
+</html>
