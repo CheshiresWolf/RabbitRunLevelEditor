@@ -12,15 +12,18 @@ http.createServer(function (request, response) {
             body += data;
 
             // Too much POST data, kill the connection!
-            if (body.length > 1e6) {
+            /*if (body.length > 1e6) {
                 console.log("NodeLevelSaver | incoming POST request | Too much POST data, killing connection");
                 request.connection.destroy();
-            }
+            }*/
         });
         request.on('end', function () {
             var post = queryString.parse(body);
-            console.log("NodeLevelSaver | incoming POST request | processing success, body.parse : ", post);
-            writeFile(post);
+            console.log("NodeLevelSaver | incoming POST request | processing success, name : ", post.name);
+
+            var path = "level/" + getDateTime() + "_" + post.name;
+            writeFile(post, path + ".json");
+            writeImage(post.toDataURL, path + ".png");
         });
     } else {
         console.log("NodeLevelSaver | incoming GET request | ignoring");
@@ -30,9 +33,7 @@ http.createServer(function (request, response) {
 
 console.log("NodeLevelSaver | server online");
 
-function writeFile(levelData) {
-    var path = "level/" + getDateTime() + "_" + levelData.name + ".json";
-
+function writeFile(levelData, path) {
     fs.open(path, "w", function(err, fd) {
         if (err) {
             console.log("NodeLevelSaver | writeFile | open error : ", err);
@@ -41,9 +42,25 @@ function writeFile(levelData) {
                 if (werr) {
                     console.log("NodeLevelSaver | writeFile | write error : ", werr);
                 } else {
-                    console.log("The file was saved!");
+                    console.log("NodeLevelSaver | writeFile | File " + path + " was saved!");
                 }
             });
+        }
+    });
+}
+
+function writeImage(data, path) {
+    //base64Data = base64Data.replace(/^data:image\/png;base64,/, "");
+
+    var base64Data =  data.replace(/^data:image\/png;base64,/, "");
+    base64Data += base64Data.replace('+', ' ');
+    var binaryData =  new Buffer(base64Data, 'base64').toString('binary');
+
+    fs.writeFile(path, binaryData, "binary", function(err) {
+        if (err) {
+            console.log("NodeLevelSaver | writeImage | write error : ", err);
+        } else {
+            console.log("NodeLevelSaver | writeImage | Image " + path + " was saved!");
         }
     });
 }

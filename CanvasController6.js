@@ -1,4 +1,4 @@
-require(["jquery"], function($) {
+require(["jquery", "contextMenu_min"], function($, contextMenu) {
 
 	var SERVER_URL = "http://localhost:8888";
 
@@ -438,6 +438,7 @@ require(["jquery"], function($) {
 
 		self.loadImage = function(name, opts, callback) {
 			var img = new Image();
+			img.crossOrigin = "anonymous";
 
 		    img.onload = function() {
 		    	self.images.push(img);
@@ -445,7 +446,7 @@ require(["jquery"], function($) {
 
 		    	if (callback) callback();
 		    }
-		    img.src = "img/" + name;
+		    img.src = "https://dl.dropboxusercontent.com/u/10931846/rabbit_img/" + name;//"img/" + name;
 		}
 
 		return self;
@@ -614,7 +615,8 @@ require(["jquery"], function($) {
 
 		$.post(SERVER_URL, {
 			name : name,
-			data : printJson(name)
+			data : printJson(name),
+			toDataURL : c.toDataURL("image/png")
 		});
 
 		//console.log("toDataURL : ", c.toDataURL());
@@ -624,6 +626,17 @@ require(["jquery"], function($) {
 		var data = c.toDataURL("image/png").replace("image/png", "image/octet-stream");
 		window.location.href = data;
 	});
+
+	/*var menuButtons = [{
+        name : 'delete',
+        img  : 'img/remove.png',
+        title : 'Remove item',
+        fun : function () {
+			clickAnimation($("#removeButton"), "remove");
+        }
+    }];
+
+	$('body').contextMenu(menuButtons, { triggerOn : 'contextmenu' });*/
 
 	//========================</EVENTS>==========================
 
