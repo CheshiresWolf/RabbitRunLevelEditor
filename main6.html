@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+	<head>
+                <title></title>
+                <link rel="shortcut icon" href="img/favicon.ico" >
+
+                <script data-main="CanvasController6" src="require.js"></script>
+
+                <style>
+                	#container {
+                		position : absolute;
+                		top    : 0px;
+                		left   : 0px;
+                	}
+
+                        #loadPanel {
+                                position : absolute;
+                                top    : 10px;
+                                left   : 820px;
+                                width  : 200px;
+                                height : 60px;
+                                border : 1px solid #000000;
+                        }
+
+                	#editor {
+                		position : absolute;
+                		top    : 80px;
+                		left   : 10px;
+                		width  : 800px;
+                		height : 800px;
+                		border : 1px solid #000000;
+                	}
+
+                	#textarea {
+                		position : absolute;
+                		top    : 80px;
+                		left   : 820px;
+                		width  : 195px;
+                		height : 795px;
+                		border : 1px solid #000000;
+                		resize : none;
+                	}
+
+                        #palette {
+                                position : absolute;
+                                top    : 10px;
+                                left   : 10px;
+                                width  : 800px;
+                                height : 60px;
+                                border : 1px solid #000000;
+                        }
+
+                        .icon {
+                                width  : 50px;
+                                height : 50px;
+                        }
+
+                        #network {
+                                position : absolute;
+                                top    : 890px;
+                                left   : 820px;
+                                width  : 200px;
+                                height : 60px;
+                                border : 1px solid #000000;
+                        }
+
+                        #testFunctions {
+                                position : absolute;
+                                top    : 0px;
+                                left   : 0px;
+                                width  : 120px;
+                                height : 60px;
+                                border : 1px solid #000000;
+                        }
+
+                </style>
+
+	</head>
+	<body>
+		<div id="container">
+			<div id="loadPanel">
+                                <h style="position : absolute; left : 20px; top : 5px;">Load level :</h>
+                                <input id="fileInput" type="file" style="position : absolute; left : 20px; bottom : 5px;"></input>
+                        </div>
+			<canvas id="editor" width="800px" height="800px">
+				Your browser does not support the HTML5 canvas tag.
+			</canvas>
+                        <div id="palette">
+                                <div style="position : absolute; top : 5px; left : 10px;">
+                                        <img id="rabbitButton" class="icon" src="img/rabbit2.png" ></img>
+                                        <img id="holeButton"   class="icon" src="img/hole.png"    ></img>
+                                        <img id="boxButton"    class="icon" src="img/stone.png"   ></img>
+                                        <img id="trapButton"   class="icon" src="img/box_trap.png"></img>
+                                        <img id="carrotButton" class="icon" src="img/carrot.png"  ></img>
+                                </div>
+
+                                <div style="position : absolute; top : 5px; left : 310px;">
+                                        <img id="keyButton"    class="icon" src="img/key.png"     ></img>
+                                        <img id="doorButton"   class="icon" src="img/door.png"    ></img>
+                                </div>
+
+                                <div style="position : absolute; top : 5px; right : 110px;">
+                                        <img id="removeButton" class="icon" src="img/remove.png"  ></img>
+                                        <img id="clearButton"  class="icon" src="img/clean.png"   ></img>
+                                </div>
+
+                                <div style="position : absolute; top : 5px; right : 10px;">
+                                        <img id="printButton"  class="icon" src="img/json.png"    ></img>
+                                </div>
+                        </div>
+			<textarea id="textarea" readonly></textarea>
+                        <div id="network">
+                                <h style="position : absolute; left : 20px; top : 5px;">Save on server :</h>
+                                <input id="postName" type="text" value="fall000" style="position : absolute; left : 20px; bottom : 5px; width : 100px;"></input>
+                                <button id="postButton" style="position : absolute; right : 20px; bottom : 5px;">POST</button>
+                        </div>
+		</div>
+                <div id="testFunctions">
+                        <h style="position : absolute; top : 5px; left : 5px;">Test functions:</h>
+                        <button id="canvasToImage" style="position : absolute; bottom : 5px; left : 5px;">toImage</button>
+                </div>
+	</body>
+</html>
