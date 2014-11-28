@@ -1,0 +1,96 @@
+{
+    "name" : "fall028",
+    "base_path" : "img/",
+    "images" : {
+        "box" : ["stone.png", "stone2.png", "stone3.png", "koloda.png", "mushroom1.png", "mushroom2.png", "tukva.png"],
+        "trap" : [{
+                "file" : "box_trap.xml",
+                "frames" : "6",
+                "speed" : "100",
+                "name" : "trap",
+                "touch" : "true"
+            }, {
+                "file" : "eg.xml",
+                "frames" : "10",
+                "speed" : "150",
+                "name" : "eg"
+            }, {
+                "file" : "garotta.xml",
+                "frames" : "6",
+                "speed" : "100",
+                "name" : "garotta"
+            }],
+        "hole" : ["hole.png"],
+        "carrot" : ["carrot.png"],
+        "rabbit" : {
+            "stand" : "rabbit2.png",
+            "run" : "rabbitAnimation2.xml"
+        },
+        "lock" : {
+            "key" : "key.png",
+            "door" : "door.png"
+        },
+        "background" : {
+            "grass" : "fon.png",
+            "trees" : "kustu.png",
+            "box" : "box.png"
+        }
+    },
+    "scheme" : {
+        "rabbit" : [9, 0],
+        "hole" : [7, 2],
+        "traps" : [
+            [6, 2]
+        ],
+        "carrot" : [
+            [1, 8],
+            [7, 3],
+            [5, 4]
+        ],
+        "boxes" : [
+            [7, 1],
+            [8, 2],
+            [4, 1],
+            [6, 3],
+            [8, 5],
+            [1, 1],
+            [2, 2],
+            [4, 4],
+            [5, 5],
+            [7, 7],
+            [8, 8],
+            [5, 8],
+            [3, 6],
+            [1, 4],
+            [0, 9],
+            [3, 1],
+            [8, 6]
+        ],
+        "lock" : {
+            "keys" : [
+                [0, 8],
+                [1, 9],
+                [9, 9],
+                [0, 0],
+                [1, 5],
+                [4, 8],
+                [5, 7],
+                [2, 4],
+                [3, 2],
+                [7, 6]
+            ],
+            "doors" : [
+                [2, 9],
+                [0, 7],
+                [2, 8],
+                [1, 7],
+                [2, 5],
+                [4, 7],
+                [6, 6],
+                [3, 3],
+                [5, 2],
+                [7, 4]
+            ]
+        }
+    }
+}

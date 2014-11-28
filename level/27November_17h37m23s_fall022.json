@@ -1,0 +1,86 @@
+{
+    "name" : "fall022",
+    "base_path" : "img/",
+    "images" : {
+        "box" : ["stone.png", "stone2.png", "stone3.png", "koloda.png", "mushroom1.png", "mushroom2.png", "tukva.png"],
+        "trap" : [{
+                "file" : "box_trap.xml",
+                "frames" : "6",
+                "speed" : "100",
+                "name" : "trap",
+                "touch" : "true"
+            }, {
+                "file" : "eg.xml",
+                "frames" : "10",
+                "speed" : "150",
+                "name" : "eg"
+            }, {
+                "file" : "garotta.xml",
+                "frames" : "6",
+                "speed" : "100",
+                "name" : "garotta"
+            }],
+        "hole" : ["hole.png"],
+        "carrot" : ["carrot.png"],
+        "rabbit" : {
+            "stand" : "rabbit2.png",
+            "run" : "rabbitAnimation2.xml"
+        },
+        "lock" : {
+            "key" : "key.png",
+            "door" : "door.png"
+        },
+        "background" : {
+            "grass" : "fon.png",
+            "trees" : "kustu.png",
+            "box" : "box.png"
+        }
+    },
+    "scheme" : {
+        "rabbit" : [8, 0],
+        "hole" : [3, 9],
+        "traps" : [
+            [3, 0],
+            [7, 8],
+            [9, 8],
+            [2, 7],
+            [3, 5]
+        ],
+        "carrot" : [
+            [9, 9],
+            [9, 1],
+            [1, 1]
+        ],
+        "boxes" : [
+            [9, 0],
+            [6, 1],
+            [7, 3],
+            [5, 3],
+            [5, 9],
+            [6, 6],
+            [9, 3],
+            [5, 4],
+            [7, 5],
+            [1, 2],
+            [0, 4],
+            [4, 5],
+            [1, 6],
+            [2, 9],
+            [1, 7],
+            [5, 8]
+        ],
+        "lock" : {
+            "keys" : [
+                [7, 0],
+                [5, 0],
+                [6, 5]
+            ],
+            "doors" : [
+                [4, 0],
+                [8, 2],
+                [8, 9],
+                [4, 2]
+            ]
+        }
+    }
+}
